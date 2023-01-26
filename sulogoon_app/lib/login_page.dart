@@ -21,7 +21,7 @@ class _LoginPageState extends State<LoginPage> {
 
   void _registerAccount() async {
     String username = "Admin";
-    String password = "squ1rr3l";
+    String password = "Administrator";
     String email = "gerald.calotes@gmail.com";
 
     var userAttributes = <CognitoUserAttributeKey, String>{
