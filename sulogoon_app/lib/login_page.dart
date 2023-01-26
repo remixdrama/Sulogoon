@@ -1,4 +1,6 @@
 // ignore_for_file: prefer_const_literals_to_create_immutables
+import 'package:amplify_auth_cognito/amplify_auth_cognito.dart';
+import 'package:amplify_flutter/amplify_flutter.dart';
 import 'package:flutter/material.dart';
 
 class LoginPage extends StatefulWidget {
@@ -14,7 +16,41 @@ class _LoginPageState extends State<LoginPage> {
   final _passwordController = TextEditingController();
 
   void btnTap() {
-    print("onTap from function");
+    _registerAccount();
+  }
+
+  void _registerAccount() async {
+    String username = "Admin";
+    String password = "squ1rr3l";
+    String email = "gerald.calotes@gmail.com";
+
+    var userAttributes = <CognitoUserAttributeKey, String>{
+      CognitoUserAttributeKey.email: email,
+    };
+
+    bool registered = false;
+    try {
+      SignUpResult result = await Amplify.Auth.signUp(
+          username: username,
+          password: password,
+          options: CognitoSignUpOptions(userAttributes: userAttributes));
+
+      setState(() {
+        registered = result.isSignUpComplete;
+      });
+    } on AuthException catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+        content: Text(e.message),
+      ));
+      // safePrint(e.message);
+    }
+  }
+
+  @override
+  void dispose() {
+    _usernameController.dispose();
+    _passwordController.dispose();
+    super.dispose();
   }
 
   @override
